@@ -1,0 +1,51 @@
+Given a sorted and rotated array A of N distinct elements which is rotated at some point, and given an element key. The task is to find the index of the given element key in the array A.
+
+Example 1:
+
+Input:
+N = 9
+A[] = {5, 6, 7, 8, 9, 10, 1, 2, 3}
+key = 10
+Output:
+5
+Explanation: 10 is found at index 5.
+
+
+INTUITION:
+
+1)The intuition is basically one part of array will be ddefinitely sorted and other part would be rotated.
+2)so we tke the mid and check its equality 
+3)Then if low is less than mid,then this is the sorted part
+4)we also check if target is wthin the range
+of low and mid,else it will be in other part
+5)If not,then we check if target is within range of mid+1 and high
+6)If 3 fails,and 4 also fails,then target might be in unsorted part 
+7) if everyhing fails,then target is not present
+
+
+
+
+class Solution{
+    public:
+    int search(int A[], int l, int h, int key){
+    
+    
+    while(l<=h){
+        int mid = (l+h)>>1;
+        if(A[mid]==key) return mid;
+        if(A[mid]>=A[l]){                      //check if first part is sorted
+            if((A[l]<=key)&& (key<=A[mid])){   //if yes, check target is withn low and mid   
+                h=mid-1;                       //if yes,then it must be in first part
+            }
+            else  
+             l=mid+1;                         //else it will be in secoond part
+        } 
+        else {                             
+            if((A[mid]<=key) && (key<=A[h])){  // check if element in secnd part
+                l=mid+1;                       //if yes , shrink the range
+            }
+            else h=mid-1;                   
+        }
+    }
+    
+    return -1;
