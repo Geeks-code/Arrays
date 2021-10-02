@@ -1,0 +1,72 @@
+You will be given an array A of N non-negative integers. Your task is to find the rightmost non-zero digit in the product of array elements.
+
+
+Example 1:
+
+Input:
+N = 4, A = {3, 23, 30, 45}
+Output:
+5
+Explanation:
+Product of these numbers 
+are 93150.Rightmost 
+non-zero digit is 5.
+Example 2:
+
+Input:
+N = 5, A = {1, 2, 3, 4, 5}
+Output:
+2
+Explanation:
+Product of these numbers 
+are 120. Rightmost 
+non-zero digit is 2.
+
+Your Task:
+
+You don't need to read input or print anything. Your task is to complete the function rightmostNonZeroDigit() which takes an array A and returns the rightmost non-zero digit in the product of array elements, if there is no right most non zero digit, then return -1.
+
+
+Expected Time Complexity: O(N*logN)
+Expected Auxiliary Space: O(N)
+
+
+Constraints:
+1 ≤ N ≤ 105
+0 ≤ A[i] ≤ 105 
+
+
+
+Solution: Basic idea is to remove all the 5's and 2's which is the cause of trialing zeros
+
+class Solution{   
+  public:
+    int rightmostNonZeroDigit(int N, int A[]){
+        // code here 
+        int c=0;
+        long long product=1;
+         for(int i=0;i<N;i++){
+             while(A[i]>0 && A[i]%5==0){   // count the number of 5's
+                 A[i]=A[i]/5;
+                 c++;
+             }
+         }
+         for(int i=0;i<N;i++){
+             while(c>0 && A[i]>0 && A[i]%2==0){    // count the no. of 2's and cancel all the 2's if it has equal no. of 2's
+                 A[i]=A[i]/2;
+                 c--;
+             }
+         }
+         for(int i=0;i<N;i++){
+             product *= (A[i]%10);      // multiply all the last digits
+             product%=10;
+         }
+         if(c){
+             product*=5;              // if count of 5 is greater than 2's ,then multiply with a 5 (multiplying single 5 will be equal to any no. of 5's ,since last digit will remain  always)
+             product%=10;
+         }
+         if(!product)return -1;
+         return product;
+    }
+};
+
